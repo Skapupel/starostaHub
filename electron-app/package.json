@@ -24,11 +24,14 @@
     "@electron-forge/plugin-webpack": "^7.6.0",
     "@electron/fuses": "^1.8.0",
     "@vercel/webpack-asset-relocator-loader": "^1.7.3",
+    "autoprefixer": "^10.4.20",
     "babel-loader": "^9.2.1",
     "css-loader": "^6.11.0",
     "electron": "33.2.1",
     "node-loader": "^2.1.0",
-    "style-loader": "^3.3.4"
+    "postcss": "^8.4.49",
+    "style-loader": "^3.3.4",
+    "tailwindcss": "^3.4.16"
   },
   "keywords": [],
   "author": {
@@ -38,6 +41,7 @@
   "license": "MIT",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1",
+    "postcss-loader": "^8.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }
