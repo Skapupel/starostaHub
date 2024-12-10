@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import timedelta
 
 from django.templatetags.static import static
 from django.urls import reverse_lazy
@@ -32,6 +33,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -52,6 +55,8 @@ INSTALLED_APPS = [
     # 3rd party apps
     "rest_framework",
     "rest_framework_simplejwt",
+    "drf_yasg",
+    "corsheaders",
     # My apps
     "models.user.apps.UserConfig",
     # Always last
@@ -66,6 +71,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "starostaHubApi.urls"
@@ -160,4 +166,9 @@ UNFOLD = {
         "show_search": True,
         "show_all_applications": True,
     },
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=365),
 }

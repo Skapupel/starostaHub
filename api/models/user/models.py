@@ -69,6 +69,22 @@ class User(AbstractUser):
         return super().save(*args, **kwargs)
 
 
+class UserInvite(BaseModelFields):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    code = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+
+    class Meta:
+        verbose_name = "User invite"
+        verbose_name_plural = "User invites"
+
+    def __str__(self):
+        return self.user.email
+
+    def save(self, *args, **kwargs):
+        # TODO: Send invite email
+        return super().save(*args, **kwargs)
+
+
 class Group(BaseModelFields):
     name = models.CharField(max_length=255, blank=True)
     starosta = models.ForeignKey(
