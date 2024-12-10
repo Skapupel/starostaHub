@@ -1,4 +1,5 @@
 const rules = require('./webpack.rules');
+const Dotenv = require('dotenv-webpack');
 
 rules.push({
   test: /\.css$/,
@@ -21,5 +22,7 @@ module.exports = {
   module: {
     rules,
   },
-
+  plugins: [
+    new Dotenv()
+  ],
 };

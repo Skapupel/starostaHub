@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0b0f19; /* Matches dark background theme */
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3b3f4a; /* A subtle dark gray */
+    border-radius: 4px;
+    border: 2px solid #0b0f19; /* Optional border to create a 'gap' effect */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #505464; /* Slightly lighter on hover */
+}

@@ -33,6 +33,7 @@ module.exports = {
       name: '@electron-forge/plugin-webpack',
       config: {
         mainConfig: './webpack.main.config.js',
+        devContentSecurityPolicy: "connect-src 'self' http://localhost:8000 'unsafe-inline'",
         renderer: {
           config: './webpack.renderer.config.js',
           entryPoints: [
