@@ -1,15 +1,16 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from core.api.helpers.rest_api import rest_default_error_response, rest_default_response
-from core.api.auth.serializers import UserLoginSerializer
+from core.api.auth.serializers import UserLoginSerializer, UserRegisterSerializer
 from models.user.models import User
 
 
-class UserLoginView(APIView):
+class UserLoginAPIView(APIView):
     """
     An endpoint to login a user.
     """
@@ -66,4 +67,35 @@ class UserLoginView(APIView):
             data=response_data,
             message="User logged in successfully.",
             status=status.HTTP_200_OK,
+        )
+
+
+class UserRegisterAPIView(APIView):
+    serializer_class = UserRegisterSerializer
+
+    def post(self, request):
+        serializer = UserRegisterSerializer(data=request.data)
+        if not serializer.is_valid():
+            return rest_default_error_response(
+                serializer=serializer,
+                message="An error occurred during registration.",
+            )
+        user = User()
+        user.is_active = True
+        user.email = serializer.validated_data["email"]
+        user.first_name = serializer.validated_data["first_name"]
+        user.last_name = serializer.validated_data["last_name"]
+        try:
+            validate_password(serializer.validated_data["password"])
+        except Exception as e:
+            return rest_default_error_response(
+                data=e,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        user.set_password(serializer.validated_data["password"])
+        user.save()
+
+        return rest_default_response(
+            message="User registered successfully.",
+            status=status.HTTP_201_CREATED,
         )

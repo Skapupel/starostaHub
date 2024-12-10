@@ -4,10 +4,11 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from core.api.auth.views import UserLoginView
+from core.api.auth.views import UserLoginAPIView, UserRegisterAPIView
 
 
 urlpatterns = [
-    path("login", UserLoginView.as_view(), name="token_obtain_pair"),
+    path("login", UserLoginAPIView.as_view(), name="token_obtain_pair"),
+    path("register", UserRegisterAPIView.as_view(), name="user_register"),
     path("token/refresh", TokenRefreshView.as_view(), name="token_refresh"),
 ]
