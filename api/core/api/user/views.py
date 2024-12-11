@@ -71,6 +71,20 @@ class AvailableStudentsListAPIView(ListAPIView):
         return self.get_paginated_response(serializer.data)
 
 
+class YourGroupAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = GroupSerializer
+
+    def get(self, request):
+        if not request.user.group:
+            return rest_default_error_response(
+                data="You are not in a group", status=status.HTTP_404_NOT_FOUND
+            )
+        return rest_default_response(
+            data=GroupSerializer(request.user.group).data, status=status.HTTP_200_OK
+        )
+
+
 class GroupAPIView(APIView):
     permission_classes = [IsStarostaOrStudentInGroup]
     serializer_class = GroupSerializer

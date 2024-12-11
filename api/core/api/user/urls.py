@@ -6,6 +6,7 @@ from core.api.user.views import (
     AvailableStudentsListAPIView,
     GroupAPIView,
     UserInviteAPIView,
+    YourGroupAPIView,
 )
 
 
@@ -17,6 +18,7 @@ urlpatterns = [
         AvailableStudentsListAPIView.as_view(),
         name="available-students-list",
     ),
+    path("your-group", YourGroupAPIView.as_view(), name="your-group"),
     path("groups/<int:pk>", GroupAPIView.as_view(), name="group"),
     path("groups/<int:pk>/invite", UserInviteAPIView.as_view(), name="group-invite"),
 ]

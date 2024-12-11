@@ -1,21 +1,23 @@
 {
   "name": "electron-app",
-  "productName": "electron-app",
+  "productName": "Starosta Hub",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Starosta Hub application",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "app:dir": "electron-builder --dir"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
     "@electron-forge/cli": "^7.6.0",
     "@electron-forge/maker-deb": "^7.6.0",
+    "@electron-forge/maker-dmg": "^7.6.0",
     "@electron-forge/maker-rpm": "^7.6.0",
     "@electron-forge/maker-squirrel": "^7.6.0",
     "@electron-forge/maker-zip": "^7.6.0",
@@ -28,6 +30,7 @@
     "babel-loader": "^9.2.1",
     "css-loader": "^6.11.0",
     "electron": "33.2.1",
+    "electron-builder": "^25.1.8",
     "node-loader": "^2.1.0",
     "postcss": "^8.4.49",
     "style-loader": "^3.3.4",
@@ -50,5 +53,8 @@
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.0.2",
     "three": "^0.171.0"
+  },
+  "build": {
+    "appId": "com.skapupel.starostahub"
   }
 }

@@ -17,14 +17,11 @@ export default function NotFound() {
                     border: "1px solid rgba(255,255,255,0.1)",
                 }}
             >
-                <h1 className="text-5xl font-extrabold text-center text-white mb-8 tracking-wide">
-                    404
-                </h1>
                 <h2 className="text-xl font-bold text-center text-gray-300 mb-6">
                     Сторінку не знайдено
                 </h2>
                 <p className="text-sm text-gray-400 text-center mb-8">
-                    На жаль, запитана сторінка недоступна. Можливо, вона була видалена, або ви ввели неправильну URL-адресу.
+                    На жаль, запитана сторінка недоступна. Можливо, вона була видалена.
                 </p>
 
                 <div className="flex justify-center">

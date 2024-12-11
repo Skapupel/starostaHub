@@ -4,6 +4,7 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 module.exports = {
   packagerConfig: {
     asar: true,
+    executableName: "Starosta Hub",
   },
   rebuildConfig: {},
   makers: [
@@ -17,12 +18,26 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-deb',
-      config: {},
+      config: {
+        "options": {
+          "bin": "Starosta Hub"
+        }
+      },
     },
     {
       name: '@electron-forge/maker-rpm',
-      config: {},
+      config: {
+        "options": {
+          "bin": "Starosta Hub"
+        }
+      },
     },
+    {
+      name: '@electron-forge/maker-dmg',
+      config: {
+        format: 'ULFO'
+      }
+    }
   ],
   plugins: [
     {
