@@ -57,7 +57,6 @@ class UserProfileAPIView(APIView):
 class AvailableStudentsListAPIView(ListAPIView):
     permission_classes = [IsStarosta]
     serializer_class = StrippedUserSerializer
-    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         return User.objects.filter(
@@ -66,9 +65,8 @@ class AvailableStudentsListAPIView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        paginated_queryset = self.paginate_queryset(queryset)
-        serializer = self.serializer_class(paginated_queryset, many=True)
-        return self.get_paginated_response(serializer.data)
+        serializer = self.serializer_class(queryset, many=True)
+        return rest_default_response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class YourGroupAPIView(APIView):

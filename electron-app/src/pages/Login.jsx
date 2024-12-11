@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { ACCESS_TOKEN, REFRESH_TOKEN, USER_ID } from "../constants";
 import api from "../api";
 
 export default function Login() {
@@ -16,6 +16,7 @@ export default function Login() {
             if (response.status === 200) {
                 localStorage.setItem(ACCESS_TOKEN, response.data.data.access);
                 localStorage.setItem(REFRESH_TOKEN, response.data.data.refresh);
+                localStorage.setItem(USER_ID, response.data.data.id);
                 navigate("/");
             }
         } catch (err) {
