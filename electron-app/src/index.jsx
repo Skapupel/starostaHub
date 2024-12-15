@@ -8,6 +8,7 @@ import Profile from "./pages/Profile.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Register from './pages/Register.jsx';
+import Events from "./pages/Events.jsx";
 import './index.css';
 
 function Logout() {
@@ -29,7 +30,22 @@ function App() {
                 />
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/group/:id" element={<Group />} />
+                <Route
+                    path="/group/:id"
+                    element={
+                        <ProtectedRoute>
+                            <Group />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/events/:id"
+                    element={
+                        <ProtectedRoute>
+                            <Events />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route path="/register" element={<Register />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<NotFound />}></Route>

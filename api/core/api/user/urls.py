@@ -7,6 +7,8 @@ from core.api.user.views import (
     GroupAPIView,
     UserInviteAPIView,
     YourGroupAPIView,
+    GroupEventsAPIView,
+    GroupEventAPIView,
 )
 
 
@@ -21,4 +23,10 @@ urlpatterns = [
     path("your-group", YourGroupAPIView.as_view(), name="your-group"),
     path("groups/<int:pk>", GroupAPIView.as_view(), name="group"),
     path("groups/<int:pk>/invite", UserInviteAPIView.as_view(), name="group-invite"),
+    path("groups/<int:pk>/events", GroupEventsAPIView.as_view(), name="group-events"),
+    path(
+        "groups/<int:pk>/events/<int:event_id>",
+        GroupEventAPIView.as_view(),
+        name="group-event",
+    ),
 ]

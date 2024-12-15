@@ -12,6 +12,7 @@ export default function Group() {
 
     const [availableStudents, setAvailableStudents] = useState([]);
     const [isAddingStudents, setIsAddingStudents] = useState(false);
+    const [isRemovingStudents, setIsRemovingStudents] = useState(false);
     const [selectedStudentIds, setSelectedStudentIds] = useState([]);
     const [submitting, setSubmitting] = useState(false);
 
@@ -52,6 +53,10 @@ export default function Group() {
         setIsAddingStudents(true);
     };
 
+    const handleRemoveStudentsClick = () => {
+        setIsRemovingStudents(true);
+    };
+
     const handleStudentSelection = (studentId) => {
         if (selectedStudentIds.includes(studentId)) {
             setSelectedStudentIds(selectedStudentIds.filter((id) => id !== studentId));
@@ -60,20 +65,26 @@ export default function Group() {
         }
     };
 
-    const handleAddStudentsSubmit = async () => {
+    const handleSubmit = async (actionType) => {
         setSubmitting(true);
         try {
-            const existingStudentIds = groupData.students ? groupData.students.map(s => s.id) : [];
-            const updatedStudentIds = [...new Set([...existingStudentIds, ...selectedStudentIds])];
-
-            const patchData = {
-                students: updatedStudentIds
-            };
+            let patchData = {};
+            if (actionType === "add") {
+                const existingStudentIds = groupData.students ? groupData.students.map(s => s.id) : [];
+                const updatedStudentIds = [...new Set([...existingStudentIds, ...selectedStudentIds])];
+                patchData = { students: updatedStudentIds };
+            } else if (actionType === "remove") {
+                const remainingStudentIds = groupData.students
+                    ? groupData.students.filter(s => !selectedStudentIds.includes(s.id)).map(s => s.id)
+                    : [];
+                patchData = { remove_students: selectedStudentIds, students: remainingStudentIds };
+            }
 
             const response = await api.patch(`/api/user/groups/${id}`, patchData);
             if (response.status === 200 && response.data.data) {
                 setGroupData(response.data.data);
                 setIsAddingStudents(false);
+                setIsRemovingStudents(false);
                 setSelectedStudentIds([]);
             }
         } catch (err) {
@@ -134,7 +145,6 @@ export default function Group() {
                         <div className="bg-black/40 p-4 rounded-lg border border-gray-700 text-white space-y-2">
                             <div><span className="font-medium">Повне ім'я:</span> {starosta.full_name}</div>
                             <div><span className="font-medium">Електронна адреса:</span> {starosta.email}</div>
-                            <div><span className="font-medium">Роль:</span> {starosta.role}</div>
                         </div>
                     ) : (
                         <div className="text-gray-400">Немає старости.</div>
@@ -149,7 +159,6 @@ export default function Group() {
                                 <div key={student.id} className="bg-black/40 p-4 rounded-lg border border-gray-700 text-white space-y-1">
                                     <div><span className="font-medium">Повне ім'я:</span> {student.full_name}</div>
                                     <div><span className="font-medium">Електронна адреса:</span> {student.email}</div>
-                                    <div><span className="font-medium">Роль:</span> {student.role}</div>
                                 </div>
                             ))}
                         </div>
@@ -158,23 +167,31 @@ export default function Group() {
                     )}
                 </section>
 
-                {isStarosta && !isAddingStudents && (
-                    <div className="mt-4 flex justify-end">
+                {isStarosta && (
+                    <div className="mt-4 flex space-x-2">
                         <button
                             onClick={handleAddStudentsClick}
                             className="px-4 py-2 bg-blue-600 rounded-lg font-bold hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none text-white"
                         >
                             Додати студентів
                         </button>
+                        <button
+                            onClick={handleRemoveStudentsClick}
+                            className="px-4 py-2 bg-red-600 rounded-lg font-bold hover:bg-red-700 focus:ring-4 focus:ring-red-500 focus:outline-none text-white"
+                        >
+                            Видалити студентів
+                        </button>
                     </div>
                 )}
 
-                {isStarosta && isAddingStudents && (
+                {(isAddingStudents || isRemovingStudents) && (
                     <div className="bg-black/50 p-4 rounded border border-gray-700 text-white space-y-4 mt-4">
-                        <h3 className="text-xl font-bold">Оберіть студентів для додавання</h3>
-                        {availableStudents.length > 0 ? (
+                        <h3 className="text-xl font-bold">
+                            {isAddingStudents ? "Оберіть студентів для додавання" : "Оберіть студентів для видалення"}
+                        </h3>
+                        {(isAddingStudents ? availableStudents.length > 0 : students.length > 0) ? (
                             <div className="flex flex-col space-y-2">
-                                {availableStudents.map((st) => (
+                                {(isAddingStudents ? availableStudents : students).map((st) => (
                                     <label key={st.id} className="flex items-center space-x-2">
                                         <input
                                             type="checkbox"
@@ -186,12 +203,12 @@ export default function Group() {
                                 ))}
                             </div>
                         ) : (
-                            <div>Немає доступних студентів для додавання.</div>
+                            <div>Немає доступних студентів.</div>
                         )}
                         <div className="flex space-x-2">
                             <button
                                 disabled={submitting || selectedStudentIds.length === 0}
-                                onClick={handleAddStudentsSubmit}
+                                onClick={() => handleSubmit(isAddingStudents ? "add" : "remove")}
                                 className="px-4 py-2 bg-green-600 rounded-lg font-bold hover:bg-green-700 focus:ring-4 focus:ring-green-500 focus:outline-none disabled:opacity-50"
                             >
                                 Підтвердити
@@ -200,6 +217,7 @@ export default function Group() {
                                 disabled={submitting}
                                 onClick={() => {
                                     setIsAddingStudents(false);
+                                    setIsRemovingStudents(false);
                                     setSelectedStudentIds([]);
                                 }}
                                 className="px-4 py-2 bg-gray-600 rounded-lg font-bold hover:bg-gray-700 focus:ring-4 focus:ring-gray-500 focus:outline-none"

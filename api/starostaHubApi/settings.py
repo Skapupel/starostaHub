@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # My apps
     "models.user.apps.UserConfig",
+    "models.event.apps.EventConfig",
     # Always last
     "models.common.apps.CommonConfig",
 ]

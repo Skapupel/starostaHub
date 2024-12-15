@@ -8,9 +8,7 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Base tiles that always appear
     const baseTiles = [
-        { title: "Розклад", route: "/events", emoji: "📅" },
         { title: "Профіль", route: "/profile", emoji: "👤" },
         { title: "Вихід", route: "/logout", emoji: "🚪" },
     ];
@@ -23,7 +21,7 @@ export default function Home() {
                 const response = await api.get("/api/user/your-group");
                 if (response.status === 200 && response.data.data) {
                     setGroup(response.data.data);
-                } 
+                }
             } catch (err) {
                 setError("Сталася помилка при завантаженні групи.");
             } finally {
@@ -34,7 +32,6 @@ export default function Home() {
         fetchGroup();
     }, []);
 
-    // If loading, show a loading state
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white">
@@ -43,11 +40,12 @@ export default function Home() {
         );
     }
 
-    // If error occurred, we won't show a group tile, just base tiles.
-    // If no error and group is found, add the group tile
     const tiles = [...baseTiles];
     if (!error && group) {
-        tiles.unshift({ title: group.name, route: `/group/${group.id}`, emoji: "🏫" });
+        tiles.unshift(
+            { title: group.name, route: `/group/${group.id}`, emoji: "🏫" },
+            { title: "Розклад", route: `/events/${group.id}`, emoji: "📅" }
+        );
     }
 
     return (
