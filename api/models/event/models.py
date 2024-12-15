@@ -8,7 +8,7 @@ from models.user.models import Group
 class Event(BaseModelFields):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="events")
     name = models.CharField(max_length=255)
-    url = models.URLField()
+    url = models.TextField()
     date = models.DateField()
     time = models.TimeField()
     weekday = models.IntegerField(
